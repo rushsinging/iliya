@@ -1,0 +1,28 @@
+- name: deploy ghost
+  hosts: iliya
+  vars:
+    local_path: './ghost'
+    remote_path: '~/ghost'
+  remote_user: root
+  tasks:
+  - name: init docker.py
+    pip: 
+      name: docker-compose
+  - name: Ensures {{ remote_path }} dir exists
+    file: path={{ remote_path }} state=directory
+  - name: copy ghost file
+    copy: 
+      src: "{{ local_path }}/docker-compose.yaml"
+      dest: "{{ remote_path }}/docker-compose.yaml"
+      owner: root
+      group: root 
+      mode: 0644
+      backup: yes
+  - name: Stop ghost server
+    docker_service:
+      project_src: ghost
+      state: absent
+  - name: Start up ghost server
+    docker_service:
+      project_src: ghost
+    register: output

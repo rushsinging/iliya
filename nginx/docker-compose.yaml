@@ -1,0 +1,13 @@
+version: '2'
+services:
+  nginx:
+    image: openresty/openresty:1.13.6.1-alpine
+    network_mode: host
+    volumes:
+    - './nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf'
+    - './nginx-ghost.conf:/usr/local/openresty/nginx/conf/conf.d/nginx-ghost.conf'
+    - './run.sh:/run.sh'
+    - './ssl:/usr/local/openresty/nginx/conf/ssl'
+    ports:
+    - '80:80'
+    command: ./run.sh
