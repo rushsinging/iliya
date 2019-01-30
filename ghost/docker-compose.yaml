@@ -1,42 +1,27 @@
-version: '2'
+# by default, the Ghost image will use SQLite (and thus requires no separate database container)
+# we have used MySQL here merely for demonstration purposes (especially environment-variable-based configuration)
+
+version: '3.1'
 services:
-  mariadb:
-    image: 'bitnami/mariadb:latest'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_ghost
-      - MARIADB_DATABASE=bitnami_ghost
-    volumes:
-      - 'mariadb_data:/bitnami'
   ghost:
-    image: 'bitnami/ghost:latest'
-    labels:
-      kompose.service.type: nodeport
-    environment:
-      - MARIADB_HOST=mariadb
-      - MARIADB_PORT_NUMBER=3306
-      - GHOST_DATABASE_USER=bn_ghost
-      - GHOST_DATABASE_NAME=bitnami_ghost
-      - ALLOW_EMPTY_PASSWORD=yes
-      - GHOST_HOST=wishstone.in
-      - GHOST_PORT_NUMBER=80
-      - GHOST_EMAIL=admin@wishstone.in
-      - GHOST_PASSWORD=7ug2ACotgRxxsjve
-      - GHOST_USERNAME=Admin
-      - SMTP_HOST=smtp.exmail.qq.com
-      - SMTP_PORT=465
-      - SMTP_USER=hello@guokr.com
-      - SMTP_PASSWORD=SoxJUYrDxzeu2jNH
-      - SMTP_SERVICE=Custom
-      # - ALLOW_EMPTY_PASSWORD=no
+    image: ghost:2.10.1
+    restart: always
     ports:
-      - '2368:2368'
-    volumes:
-      - 'ghost_data:/bitnami'
+      - 2368:2368
+    environment:
+      # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      url: http://wishstone.in
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: root
+      database__connection__password: ghost
+      database__connection__database: ghost
     depends_on:
-      - mariadb
-volumes:
-  mariadb_data:
-    driver: local
-  ghost_data:
-    driver: local
+      - db
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ghost
+    volumes:
+    - './data:/var/lib/mysql'

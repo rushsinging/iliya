@@ -1,0 +1,42 @@
+version: '2'
+services:
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_ghost
+      - MARIADB_DATABASE=bitnami_ghost
+    volumes:
+      - 'mariadb_data:/bitnami'
+  ghost:
+    image: 'bitnami/ghost:2.10.1'
+    labels:
+      kompose.service.type: nodeport
+    environment:
+      - MARIADB_HOST=mariadb
+      - MARIADB_PORT_NUMBER=3306
+      - GHOST_DATABASE_USER=bn_ghost
+      - GHOST_DATABASE_NAME=bitnami_ghost
+      - ALLOW_EMPTY_PASSWORD=yes
+      - GHOST_HOST=wishstone.in
+      - GHOST_PORT_NUMBER=80
+      - GHOST_EMAIL=admin@wishstone.in
+      - GHOST_PASSWORD=7ug2ACotgRxxsjve
+      - GHOST_USERNAME=Admin
+      - SMTP_HOST=smtp.exmail.qq.com
+      - SMTP_PORT=465
+      - SMTP_USER=hello@guokr.com
+      - SMTP_PASSWORD=SoxJUYrDxzeu2jNH
+      - SMTP_SERVICE=Custom
+      # - ALLOW_EMPTY_PASSWORD=no
+    ports:
+      - '2368:2368'
+    volumes:
+      - 'ghost_data:/bitnami'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
+  ghost_data:
+    driver: local
