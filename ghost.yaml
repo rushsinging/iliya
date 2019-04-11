@@ -20,9 +20,6 @@
       backup: yes
   - name: Stop ghost server
     docker_service:
-      project_src: ghost
-      state: absent
-  - name: Start up ghost server
-    docker_service:
+      recreate: always
       project_src: ghost
     register: output
