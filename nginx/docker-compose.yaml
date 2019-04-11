@@ -5,9 +5,11 @@ services:
     network_mode: host
     volumes:
     - './nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf'
-    - './nginx-ghost.conf:/usr/local/openresty/nginx/conf/conf.d/nginx-ghost.conf'
+    - './conf.d:/usr/local/openresty/nginx/conf/conf.d'
     - './run.sh:/run.sh'
     - './ssl:/usr/local/openresty/nginx/conf/ssl'
     ports:
     - '80:80'
-    command: ./run.sh
+    command: 
+    - sh 
+    - ./run.sh

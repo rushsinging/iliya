@@ -8,39 +8,13 @@
   - name: init docker.py
     pip: 
       name: docker-compose
-  - name: Ensures {{ remote_path }} dir exists
-    file: path={{ remote_path }} state=directory
-  - name: copy nginx.yaml
+  - name: copy files
     copy: 
-      src: "{{ local_path }}/docker-compose.yaml"
-      dest: "{{ remote_path }}/docker-compose.yaml"
+      src: "{{ local_path }}/"
+      dest: "{{ remote_path }}/"
       owner: root
       group: root 
       mode: 0644
-      backup: yes
-  - name: copy nginx.conf
-    copy: 
-      src: "{{ local_path }}/nginx.conf"
-      dest: "{{ remote_path }}/nginx.conf"
-      owner: root
-      group: root 
-      mode: 0644
-      backup: yes
-  - name: copy nginx-ghost.conf
-    copy: 
-      src: "{{ local_path }}/nginx-ghost.conf"
-      dest: "{{ remote_path }}/nginx-ghost.conf"
-      owner: root
-      group: root 
-      mode: 0644
-      backup: yes
-  - name: copy run.sh
-    copy: 
-      src: "{{ local_path }}/run.sh"
-      dest: "{{ remote_path }}/run.sh"
-      owner: root
-      group: root 
-      mode: 0755
       backup: yes
   - name: Stop nginx server
     docker_service:
