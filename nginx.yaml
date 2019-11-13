@@ -5,9 +5,9 @@
     remote_path: '~/nginx'
   remote_user: root
   tasks:
-  - name: init docker.py
-    pip: 
-      name: docker-compose
+  # - name: init docker.py
+  #   pip: 
+  #   name: docker-compose
   - name: copy files
     copy: 
       src: "{{ local_path }}/"
