@@ -6,8 +6,7 @@
   remote_user: root
   tasks:
   - name: init docker.py
-    pip: 
-      name: docker-compose
+    command: /root/.pyenv/shims/pip install docker-compose
   - name: Ensures {{ remote_path }} dir exists
     file: path={{ remote_path }} state=directory
   - name: copy ghost file
